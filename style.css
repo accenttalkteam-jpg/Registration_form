@@ -85,8 +85,7 @@ form {
 
 input[type="text"],
 input[type="email"],
-input[type="tel"],
-select {
+input[type="tel"] {
     width: 100%;
     padding: 12px 14px;
     font-size: 13px;
@@ -98,11 +97,39 @@ select {
     transition: all 0.2s ease;
 }
 
+/* Custom Select Wrapper to fix iOS dropdown display bugs */
+.select-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+    border: 1px solid #e5e2de;
+    border-radius: 8px;
+    background-color: #faf8f5;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.select-wrapper select {
+    -webkit-appearance: none; /* Crucial for iOS Safari */
+    appearance: none;
+    background-color: transparent !important;
+    width: 100%;
+    padding: 12px 14px;
+    border: none !important;
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    color: #1a1a1a;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+
 input::placeholder {
     color: #999999;
 }
 
-input:focus, select:focus {
+input:focus, 
+.select-wrapper:focus-within {
     border-color: #1a1a1a;
     background-color: #ffffff;
     box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.04);
@@ -114,34 +141,10 @@ select:disabled {
     cursor: not-allowed;
 }
 
-CSS
-select {
-  -webkit-appearance: none; /* Crucial for iOS Safari */
-  appearance: none;
-  background-color: transparent;
-  width: 100%;
-  border: none;
-  outline: none;
-  font-family: inherit;
-  font-size: inherit;
-}
-.select-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    border: 1px solid #e5e2de;
-    border-radius: 8px;
-    background-color: #faf8f5;
-    padding: 0 14px; /* Let padding handle the spacing horizontally */
-    transition: all 0.2s ease;
-}
-
-/* Optional: match your input focus state when clicking inside the wrapper */
-.select-wrapper:focus-within {
-    border-color: #1a1a1a;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.04);
+.select-wrapper:has(select:disabled) {
+    background-color: #f3f1ed;
+    border-color: #e5e2de;
+    cursor: not-allowed;
 }
 
 button[type="submit"], .thankyou-actions button {
@@ -183,6 +186,11 @@ button[type="submit"]:hover {
 
 .website-btn {
     background: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+.website-btn:hover {
+    background: #333333 !important;
 }
 
 #thankyou-container {
@@ -200,12 +208,4 @@ button[type="submit"]:hover {
     font-size: 13px;
     margin-bottom: 16px;
     line-height: 1.5;
-}
-.thankyou-actions .website-btn {
-    background: #1a1a1a !important;
-    color: #ffffff !important;
-}
-
-.thankyou-actions .website-btn:hover {
-    background: #333333 !important;
 }
