@@ -10,12 +10,20 @@
             display: flex;
             gap: 8px;
             width: 100%;
+            box-sizing: border-box;
         }
         .phone-group select {
-            flex: 0 0 140px;
+            flex: 0 0 125px;
+            min-width: 0;
+            box-sizing: border-box;
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: transparent;
         }
         .phone-group input {
             flex: 1;
+            min-width: 0;
+            box-sizing: border-box;
         }
     </style>
 </head>
