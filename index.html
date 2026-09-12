@@ -11,11 +11,27 @@
             gap: 8px;
             width: 100%;
         }
-        .phone-group select {
+        .phone-group .select-wrapper {
             flex: 0 0 140px;
         }
         .phone-group input {
             flex: 1;
+        }
+        /* Essential wrapper style to stop iOS Safari select bugs */
+        .select-wrapper {
+            position: relative;
+            display: block;
+            width: 100%;
+            border: 1px solid #e5e2de;
+            border-radius: 8px;
+            background-color: #faf8f5;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .select-wrapper:focus-within {
+            border-color: #1a1a1a;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.04);
         }
     </style>
 </head>
@@ -43,31 +59,41 @@
                 <input type="email" name="entry.1045781291" placeholder="Gmail Address (e.g. name@gmail.com)" pattern="[a-zA-Z0-9._%+-]+@gmail\.com" title="Please enter a valid Gmail address ending in @gmail.com" required>
 
                 <div class="phone-group">
-                    <select id="phoneCodeSelect" required>
-                        <option value="" disabled selected>Code</option>
-                    </select>
+                    <div class="select-wrapper">
+                        <select id="phoneCodeSelect" required>
+                            <option value="" disabled selected>Code</option>
+                        </select>
+                    </div>
                     <input type="hidden" name="entry.1166974658" id="fullPhoneInput">
                     <input type="tel" id="phoneNumberInput" placeholder="WhatsApp Number" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                 </div>
 
-                <select name="entry.1032812985" id="countrySelect" required>
-                    <option value="" disabled selected>Select Your Country</option>
-                </select>
+                <div class="select-wrapper">
+                    <select name="entry.1032812985" id="countrySelect" required>
+                        <option value="" disabled selected>Select Your Country</option>
+                    </select>
+                </div>
 
-                <select name="entry.2133025000" id="stateSelect" required disabled>
-                    <option value="" disabled selected>Select Your State / Province</option>
-                </select>
+                <div class="select-wrapper">
+                    <select name="entry.2133025000" id="stateSelect" required disabled>
+                        <option value="" disabled selected>Select Your State / Province</option>
+                    </select>
+                </div>
 
-                <select name="entry.839337160" id="citySelect" required disabled>
-                    <option value="" disabled selected>Select Your City / Location</option>
-                </select>
+                <div class="select-wrapper">
+                    <select name="entry.839337160" id="citySelect" required disabled>
+                        <option value="" disabled selected>Select Your City / Location</option>
+                    </select>
+                </div>
 
-                <select name="entry.1315362441" required>
-                    <option value="" disabled selected>Current English Proficiency Level</option>
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate" selected>Intermediate</option>
-                    <option value="Advanced">Advanced</option>
-                </select>
+                <div class="select-wrapper">
+                    <select name="entry.1315362441" required>
+                        <option value="" disabled selected>Current English Proficiency Level</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate" selected>Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
 
                 <input type="text" name="entry.1308328719" placeholder="Your primary goal or biggest challenge?" required>
 
@@ -110,14 +136,15 @@
             countries.forEach(country => {
                 let option = document.createElement('option');
                 option.value = country.name;
-                option.text = `${country.flag || ''} ${country.name}`;
+                // Removed inline emojis from options to prevent iOS Safari crash bug
+                option.text = country.name;
                 option.dataset.isoCode = country.isoCode;
                 countrySelect.appendChild(option);
 
                 if (country.phonecode) {
                     let phoneOption = document.createElement('option');
                     phoneOption.value = `+${country.phonecode}`;
-                    phoneOption.text = `${country.flag || ''} +${country.phonecode} (${country.isoCode})`;
+                    phoneOption.text = `+${country.phonecode} (${country.isoCode})`;
                     phoneOption.dataset.isoCode = country.isoCode;
                     
                     if (country.isoCode === 'IN') {
