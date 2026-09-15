@@ -123,7 +123,7 @@
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
     <script type="module">
-        import { getCountries, getStatesOfCountry, getCitiesOfState } from 'https://esm.run/@countrystatecity/countries-browser';
+        import { Country, State, City } from 'https://esm.run/country-state-city';
 
         document.addEventListener('DOMContentLoaded', () => {
             const countrySelect = document.getElementById('countrySelect');
@@ -131,11 +131,12 @@
             const stateSelect = document.getElementById('stateSelect');
             const citySelect = document.getElementById('citySelect');
             const phoneInput = document.getElementById('phoneNumberInput');
-            const countries = getCountries();
+            const countries = Country.getAllCountries();
             
             countries.forEach(country => {
                 let option = document.createElement('option');
                 option.value = country.name;
+                // Removed inline emojis from options to prevent iOS Safari crash bug
                 option.text = country.name;
                 option.dataset.isoCode = country.isoCode;
                 countrySelect.appendChild(option);
@@ -194,7 +195,7 @@
                 citySelect.disabled = true;
 
                 if (countryCode) {
-                    const states = getStatesOfCountry(countryCode);
+                    const states = State.getStatesOfCountry(countryCode);
                     if (states && states.length > 0) {
                         states.forEach(state => {
                             let option = document.createElement('option');
@@ -224,7 +225,7 @@
                 citySelect.disabled = true;
 
                 if (stateCode && countryCode) {
-                    const cities = getCitiesOfState(countryCode, stateCode);
+                    const cities = City.getCitiesOfState(countryCode, stateCode);
                     if (cities && cities.length > 0) {
                         cities.forEach(city => {
                             let option = document.createElement('option');
